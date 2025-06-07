@@ -1,14 +1,20 @@
 package com.github.NikitaPopovskiy.SeriesTracker.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "serials")
 public class Serial {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
 
     public String getName() {
         return name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -16,7 +22,9 @@ public class Serial {
         this.name = name;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
+        
     }
+
 }

@@ -4,8 +4,6 @@ import com.github.NikitaPopovskiy.SeriesTracker.models.*;
 import com.github.NikitaPopovskiy.SeriesTracker.services.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-
 @RestController
 public class SerialsController {
     private final SerialsService serialsService;
@@ -20,12 +18,12 @@ public class SerialsController {
     }
 
     @DeleteMapping ("/delete")
-    public String deleteSerial (@RequestParam String title) {
-        return serialsService.deleteSerial(title);
+    public String deleteSerial (@RequestParam Long id) {
+        return serialsService.deleteSerial(id);
     }
 
     @GetMapping ("/list")
-    public List<Serial> listSerials () {
+    public Iterable<Serial> listSerials () {
         return serialsService.listSerials();
     }
 

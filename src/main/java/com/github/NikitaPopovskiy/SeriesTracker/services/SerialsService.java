@@ -1,31 +1,31 @@
 package com.github.NikitaPopovskiy.SeriesTracker.services;
 
+import com.github.NikitaPopovskiy.SeriesTracker.repositories.*;
 import org.springframework.stereotype.*;
 
-import java.util.*;
 import com.github.NikitaPopovskiy.SeriesTracker.models.Serial;
 
 @Service
 public class SerialsService {
-    public String addSerial (String title) {
-        return "Сериал " + title + " успешно добавлен!";
+    private final SerialsRepository serialsRepository;
+
+    public SerialsService (SerialsRepository serialsRepository) {
+        this.serialsRepository = serialsRepository;
     }
 
-    public String deleteSerial (String title) {
-        return "Сериал " + title + " успешно удален!";
+    public String addSerial (String serialName) {
+        Serial newSerial = new Serial();
+        newSerial.setName(serialName);
+        serialsRepository.save(newSerial);
+        return "Сериал " + serialName + " успешно добавлен!";
     }
 
-    public List<Serial> listSerials () {
-        List <Serial> list = new ArrayList<>();
-        Serial s1 = new Serial();
-        s1.setName("Очень странные дела");
-        s1.setId(1);
-        list.add(s1);
+    public String deleteSerial (Long id) {
+        serialsRepository.deleteById(id);
+        return "Сериал " + id + " успешно удален!";
+    }
 
-        Serial s2 = new Serial();
-        s2.setName("Игра в кальмара");
-        s2.setId(2);
-        list.add(s2);
-        return list;
+    public Iterable<Serial> listSerials () {
+        return serialsRepository.findAll();
     }
 }
