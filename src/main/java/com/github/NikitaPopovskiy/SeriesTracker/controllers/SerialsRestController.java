@@ -2,27 +2,28 @@ package com.github.NikitaPopovskiy.SeriesTracker.controllers;
 
 import com.github.NikitaPopovskiy.SeriesTracker.models.*;
 import com.github.NikitaPopovskiy.SeriesTracker.services.*;
+import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class SerialsController {
+public class SerialsRestController {
     private final SerialsService serialsService;
 
-    public SerialsController (SerialsService serialsService) {
+    public SerialsRestController (SerialsService serialsService) {
         this.serialsService = serialsService;
     }
 
-    @PostMapping ("/add")
+    @PostMapping ("/api/v1/add")
     public String addSerial (@RequestParam String title) {
         return serialsService.addSerial(title);
     }
 
-    @DeleteMapping ("/delete")
+    @DeleteMapping ("/api/v1/delete")
     public String deleteSerial (@RequestParam Long id) {
         return serialsService.deleteSerial(id);
     }
 
-    @GetMapping ("/list")
+    @GetMapping ("/api/v1/list")
     public Iterable<Serial> listSerials () {
         return serialsService.listSerials();
     }

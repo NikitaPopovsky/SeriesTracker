@@ -24,7 +24,5 @@ public class Serial {
 
     public void setId(Long id) {
         this.id = id;
-        
     }
-
 }
