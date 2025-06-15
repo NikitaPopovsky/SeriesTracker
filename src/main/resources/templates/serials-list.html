@@ -44,21 +44,21 @@
             <tbody>
             <tr th:each="serial : ${serialList}">
                 <td>
-                    <img th:if="${serial.poster_path}"
-                         th:src="${'https://image.tmdb.org/t/p/w200' + serial.poster_path}"
+                    <img th:if="${serial.posterPath}"
+                         th:src="${'https://image.tmdb.org/t/p/w200' + serial.posterPath}"
                          alt="Постер сериала"
                          class="poster-img">
-                    <div th:unless="${serial.poster_path}" class="text-muted">Нет постера</div>
+                    <div th:unless="${serial.posterPath}" class="text-muted">Нет постера</div>
                 </td>
                 <td th:text="${serial.name}"></td>
-                <td th:text="${serial.original_name}"></td>
+                <td th:text="${serial.originalName}"></td>
                 <td>
-                    <span th:if="${serial.first_air_date}" th:text="${#strings.substring(serial.first_air_date, 0, 10)}"></span>
-                    <span th:unless="${serial.first_air_date}" class="text-muted">-</span>
+                    <span th:if="${serial.firstAirDate}" th:text="${#strings.substring(serial.firstAirDate, 0, 10)}"></span>
+                    <span th:unless="${serial.firstAirDate}" class="text-muted">-</span>
                 </td>
                 <td class="description-cell" th:text="${serial.overview}"></td>
                 <td>
-                        <span th:each="country : ${serial.origin_country}"
+                        <span th:each="country : ${serial.originCountry}"
                               th:text="${country}"
                               class="badge bg-secondary me-1"></span>
                 </td>

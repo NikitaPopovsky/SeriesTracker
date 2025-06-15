@@ -16,13 +16,14 @@ public class SerialsRestController {
 
     @PostMapping ("/api/v1/add")
     public String addSerial (
+            @RequestParam int idTmdb,
             @RequestParam String name,
-            @RequestParam String original_name,
-            @RequestParam LocalDate first_air_date,
+            @RequestParam String originalName,
+            @RequestParam LocalDate firstAirDate,
             @RequestParam String overview,
-            @RequestParam String origin_country,
-            @RequestParam String poster_path) {
-        return serialsService.addSerial(name, original_name, first_air_date, overview, origin_country, poster_path);
+            @RequestParam String originCountry,
+            @RequestParam String posterPath) {
+        return serialsService.addSerial(idTmdb, name, originalName, firstAirDate, overview, originCountry, posterPath);
     }
 
     @DeleteMapping ("/api/v1/delete")

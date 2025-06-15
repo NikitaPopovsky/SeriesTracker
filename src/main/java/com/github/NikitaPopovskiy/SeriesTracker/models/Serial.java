@@ -10,20 +10,28 @@ public class Serial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "id_tmdb")
+    private int idTmdb;
     private String name;
-    private String original_name;
-    private LocalDate first_air_date;
+    @Column(name = "original_name")
+    private String originalName;
+    @Column(name = "first_air_date")
+    private LocalDate firstAirDate;
     private String overview;
-    private String origin_country;
-    private String poster_path;
+    @Column(name = "origin_country")
+    private String originCountry;
+    @Column(name = "poster_path")
+    private String posterPath;
 
-    public Serial(String name, String original_name, LocalDate first_air_date, String overview, String origin_country, String poster_path) {
+    public Serial(int idTmdb, String name, String originalName, LocalDate firstAirDate, String overview,
+                  String originCountry, String posterPath) {
         this.name = name;
-        this.original_name = original_name;
-        this.first_air_date = first_air_date;
+        this.originalName = originalName;
+        this.firstAirDate = firstAirDate;
         this.overview = overview;
-        this.origin_country = origin_country;
-        this.poster_path = poster_path;
+        this.originCountry = originCountry;
+        this.posterPath = posterPath;
+        this.idTmdb = idTmdb;
     }
 
     public Serial() {
@@ -45,20 +53,20 @@ public class Serial {
         this.id = id;
     }
 
-    public String getOriginal_name() {
-        return original_name;
+    public String getOriginalName() {
+        return originalName;
     }
 
-    public void setOriginal_name(String original_name) {
-        this.original_name = original_name;
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
     }
 
-    public LocalDate getFirst_air_date() {
-        return first_air_date;
+    public LocalDate getFirstAirDate() {
+        return firstAirDate;
     }
 
-    public void setFirst_air_date(LocalDate first_air_date) {
-        this.first_air_date = first_air_date;
+    public void setFirstAirDate(LocalDate firstAirDate) {
+        this.firstAirDate = firstAirDate;
     }
 
     public String getOverview() {
@@ -69,19 +77,27 @@ public class Serial {
         this.overview = overview;
     }
 
-    public String getOrigin_country() {
-        return origin_country;
+    public String getOriginCountry() {
+        return originCountry;
     }
 
-    public void setOrigin_country(String origin_country) {
-        this.origin_country = origin_country;
+    public void setOriginCountry(String originCountry) {
+        this.originCountry = originCountry;
     }
 
-    public String getPoster_path() {
-        return poster_path;
+    public String getPosterPath() {
+        return posterPath;
     }
 
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+    public int getIdTmdb() {
+        return idTmdb;
+    }
+
+    public void setIdTmdb(int idTmdb) {
+        this.idTmdb = idTmdb;
     }
 }

@@ -15,9 +15,10 @@ public class SerialsService {
         this.serialsRepository = serialsRepository;
     }
 
-    public String addSerial (String serialName, String original_name, LocalDate first_air_date, String overview,
-                             String origin_country, String poster_path) {
-        Serial newSerial = new Serial(serialName, original_name, first_air_date, overview, origin_country, poster_path);
+    public String addSerial (int idTmdb, String serialName, String originalName, LocalDate firstAirDate,
+                             String overview, String originCountry, String posterPath) {
+        Serial newSerial = new Serial(idTmdb, serialName, originalName, firstAirDate, overview,
+                originCountry, posterPath);
         serialsRepository.save(newSerial);
         return "Сериал " + serialName + " успешно добавлен!";
     }
