@@ -2,8 +2,9 @@ package com.github.NikitaPopovskiy.SeriesTracker.controllers;
 
 import com.github.NikitaPopovskiy.SeriesTracker.models.*;
 import com.github.NikitaPopovskiy.SeriesTracker.services.*;
-import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.*;
 
 @RestController
 public class SerialsRestController {
@@ -14,8 +15,14 @@ public class SerialsRestController {
     }
 
     @PostMapping ("/api/v1/add")
-    public String addSerial (@RequestParam String title) {
-        return serialsService.addSerial(title);
+    public String addSerial (
+            @RequestParam String name,
+            @RequestParam String original_name,
+            @RequestParam LocalDate first_air_date,
+            @RequestParam String overview,
+            @RequestParam String origin_country,
+            @RequestParam String poster_path) {
+        return serialsService.addSerial(name, original_name, first_air_date, overview, origin_country, poster_path);
     }
 
     @DeleteMapping ("/api/v1/delete")

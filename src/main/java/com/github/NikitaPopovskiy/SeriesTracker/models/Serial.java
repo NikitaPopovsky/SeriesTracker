@@ -17,6 +17,18 @@ public class Serial {
     private String origin_country;
     private String poster_path;
 
+    public Serial(String name, String original_name, LocalDate first_air_date, String overview, String origin_country, String poster_path) {
+        this.name = name;
+        this.original_name = original_name;
+        this.first_air_date = first_air_date;
+        this.overview = overview;
+        this.origin_country = origin_country;
+        this.poster_path = poster_path;
+    }
+
+    public Serial() {
+    }
+
     public String getName() {
         return name;
     }
