@@ -16,14 +16,6 @@ public class SerialsFrontController {
 
     @GetMapping("/")
     public String home(Model model) {
-        // Здесь можно добавить данные для отображения
-        model.addAttribute("message", "Добро пожаловать в мониторинг сериалов!");
-        return "index";
-    }
-
-    @GetMapping("/serials")
-    public String serialList(Model model) {
-        // Заглушка - в реальном приложении здесь будет список из БД или API
         Iterable<Serial> serialList = serialsService.listSerials();
         model.addAttribute("serialList", serialList);
         return "serials-list";
