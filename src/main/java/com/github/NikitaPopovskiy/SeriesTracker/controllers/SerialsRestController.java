@@ -1,18 +1,19 @@
 package com.github.NikitaPopovskiy.SeriesTracker.controllers;
 
+import com.github.NikitaPopovskiy.SeriesTracker.dto.*;
 import com.github.NikitaPopovskiy.SeriesTracker.models.*;
 import com.github.NikitaPopovskiy.SeriesTracker.services.*;
+import lombok.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.*;
+import java.util.*;
 
 @RestController
+@RequiredArgsConstructor
 public class SerialsRestController {
     private final SerialsService serialsService;
-
-    public SerialsRestController (SerialsService serialsService) {
-        this.serialsService = serialsService;
-    }
+    private final TmdbService tmdbService;
 
     @PostMapping ("/api/v1/add")
     public String addSerial (
@@ -35,5 +36,11 @@ public class SerialsRestController {
     public Iterable<Serial> listSerials () {
         return serialsService.listSerials();
     }
+
+    @GetMapping ("/api/v1/search")
+    public List<TmdbDto> searchSerials (@RequestParam String query) {
+        return tmdbService.searchSerials(query);
+    }
+
 
 }

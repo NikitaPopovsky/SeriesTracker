@@ -14,10 +14,10 @@ public class TmdbDto {
     private String originalName;
     @JsonProperty ("first_air_date")
     private LocalDate firstAirDate;
-    private LocalDate overview;
+    private String overview;
     @JsonProperty ("origin_country")
-    private LocalDate originCountry;
+    private String originCountry;
     @JsonProperty ("poster_path")
-    private LocalDate posterPath;
+    private String posterPath;
 
 }

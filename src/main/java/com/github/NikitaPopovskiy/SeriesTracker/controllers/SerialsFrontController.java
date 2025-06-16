@@ -20,4 +20,10 @@ public class SerialsFrontController {
         model.addAttribute("serialList", serialList);
         return "serials-list";
     }
+
+    @GetMapping ("/add")
+    public String addForm () {
+        return "add-serial";
+    }
+
 }
