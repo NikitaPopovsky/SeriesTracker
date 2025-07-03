@@ -5,6 +5,7 @@ import com.github.NikitaPopovskiy.SeriesTracker.models.*;
 import com.github.NikitaPopovskiy.SeriesTracker.services.*;
 import lombok.*;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.*;
 
 import java.time.*;
 import java.util.*;
@@ -38,7 +39,7 @@ public class SerialsRestController {
     }
 
     @GetMapping ("/api/v1/search")
-    public List<TmdbDto> searchSerials (@RequestParam String query) {
+    public Mono<List<TmdbDto>> searchSerials (@RequestParam String query) {
         return tmdbService.searchSerials(query);
     }
 
