@@ -1,45 +1,40 @@
 package com.github.NikitaPopovskiy.SeriesTracker.services;
 
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.datatype.jsr310.*;
 import com.github.NikitaPopovskiy.SeriesTracker.dto.*;
-import lombok.*;
-import lombok.extern.slf4j.*;
-import org.apache.catalina.connector.*;
-import org.springframework.core.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.*;
-import org.springframework.web.reactive.function.client.*;
-import org.springframework.web.util.*;
-import reactor.core.publisher.*;
 
 import java.io.*;
 import java.net.*;
 import java.nio.charset.*;
 import java.util.*;
 
-import okhttp3.OkHttpClient;
+import okhttp3.*;
 import okhttp3.Request;
 import okhttp3.Response;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class TmdbService {
-    private final WebClient tmdbWebClient;
+    private final OkHttpClient okHttpClient;
+    private final String apiUrl;
+    private final String apiKey;
 
-    public Mono<List<TmdbDto>> searchSerials(String name) {
+    public TmdbService(
+            @Value("${tmdb.api.base.url}") String apiUrl,
+            @Value("${tmdb.api.key}") String apiKey) {
+        this.okHttpClient = new OkHttpClient();
+        this.apiUrl = apiUrl;
+        this.apiKey = apiKey;
+    }
 
+    public List<TmdbDto> searchSerials(String name) {
 
-        //+отладка
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url("https://api.themoviedb.org/3/search/multi?query=%D0%9E%D1%87%D0%B5%D0%BD%D1%8C%20%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%B4%D0%B5%D0%BB%D0%B0&include_adult=false&language=en-US&page=1")
-                .get()
-                .addHeader("accept", "application/json")
-                .addHeader("Authorization", "ТУТ БУДЕТ ТОКЕН")
-                .build();
+        Request request = RequestInitialization(name, apiUrl, apiKey);
 
         try {
-            Response response = client.newCall(request).execute();
+            Response response = okHttpClient.newCall(request).execute();
             if (!response.isSuccessful()) {
                 String errorBode = response.body() != null ? response.body().string() : "No error body";
                 System.err.println("HTTP Error: " + response.code() + " - " + response.message());
@@ -47,9 +42,7 @@ public class TmdbService {
                 throw new IOException("HTTP error: " + response.code());
             }
 
-            String responseData = response.body().string();
-            System.out.println("Success: " + responseData);
-
+            return parseSerials(response);
         } catch (IOException e) {
             System.err.println("Request failed: " + e.getMessage());
             e.printStackTrace();
@@ -59,36 +52,54 @@ public class TmdbService {
             } else if (e instanceof java.net.ConnectException) {
                 System.err.println("Connection refused!");
             }
+            return Collections.emptyList();
         }
 
-        //-отладка
+    }
 
-        String codingName = URLEncoder.encode(name, StandardCharsets.UTF_8).replace("+","%20");
-        String uri = UriComponentsBuilder.fromPath("/search/multi")
-                .queryParam("query", codingName)
-                .queryParam("include_adult", false)
-                .queryParam("language", "en-US")
-                .queryParam("page",1)
-                .build()
-                .toUriString();
+    private List<TmdbDto> parseSerials(Response response) {
+        ObjectMapper mapper = new ObjectMapper()
+                .registerModule(new JavaTimeModule());
+        try {
+            String json = response.body().string();
+            JsonNode rootNode = mapper.readTree(json);
+            JsonNode resultNode = rootNode.get("results");
 
-        return tmdbWebClient.get()
-                .uri(uri)
-                .retrieve()
-                .onStatus(status -> status.isError(),
-                        response -> response.bodyToMono(String.class)
-                                .flatMap(errorBody -> Mono.error(new RuntimeException("TMDB Error" + errorBody))))
-                .bodyToMono(new ParameterizedTypeReference<Map<String,List<TmdbDto>>>() {})
-                .map(response -> {
-                    Object results = response.get("results");
-                    if (results instanceof List) {
-                        return (List<TmdbDto>) results;
-                    } else {
-                        log.warn ("Unexpected 'results' type :" + results);
-                        return Collections.emptyList();
-                    }
+            if (resultNode == null || !resultNode.isArray()) {
 
-                });
+                return Collections.emptyList();
+            }
+
+            return Arrays.asList(mapper.treeToValue(resultNode, TmdbDto[].class));
+
+        } catch (IOException e) {
+            System.err.println("Error parsing JSON: " + e.getMessage());
+
+            return Collections.emptyList();
+        }
+
+    }
+
+    private Request RequestInitialization(String name, String apiUrl, String apiKey) {
+        HttpUrl url = HttpUrl.parse(apiUrl)
+                .newBuilder()
+                .addPathSegments("search")
+                .addPathSegments("multi")
+                .addQueryParameter("query", name)
+                .addQueryParameter("include_adult", "false")
+                .addQueryParameter("language", "en-US")
+                .addQueryParameter("page","1")
+                .build();
+
+        String urlString = url.toString();
+
+        Request request = new Request.Builder()
+                .url(urlString)
+                .get()
+                .addHeader("accept", "application/json")
+                .addHeader("Authorization", "Bearer " + apiKey)
+                .build();
+        return request;
     }
 
 }

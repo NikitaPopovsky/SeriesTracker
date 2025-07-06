@@ -39,7 +39,7 @@ public class SerialsRestController {
     }
 
     @GetMapping ("/api/v1/search")
-    public Mono<List<TmdbDto>> searchSerials (@RequestParam String query) {
+    public List<TmdbDto> searchSerials (@RequestParam String query) {
         return tmdbService.searchSerials(query);
     }
 
