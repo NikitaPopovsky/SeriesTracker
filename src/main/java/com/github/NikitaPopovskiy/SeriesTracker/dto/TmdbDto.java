@@ -9,6 +9,7 @@ import java.time.*;
 import java.util.*;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TmdbDto {
     @JsonProperty ("id")
     private int idTmdb;

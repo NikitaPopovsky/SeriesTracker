@@ -40,7 +40,8 @@ public class SerialsRestController {
 
     @GetMapping ("/api/v1/search")
     public List<TmdbDto> searchSerials (@RequestParam String query) {
-        return tmdbService.searchSerials(query);
+        List<TmdbDto> serials = tmdbService.searchSerials(query);
+        return serials;
     }
 
 

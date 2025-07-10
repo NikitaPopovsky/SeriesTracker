@@ -87,7 +87,7 @@ public class TmdbService {
                 .addPathSegments("multi")
                 .addQueryParameter("query", name)
                 .addQueryParameter("include_adult", "false")
-                .addQueryParameter("language", "en-US")
+                .addQueryParameter("language", "ru-RU")
                 .addQueryParameter("page","1")
                 .build();
 
