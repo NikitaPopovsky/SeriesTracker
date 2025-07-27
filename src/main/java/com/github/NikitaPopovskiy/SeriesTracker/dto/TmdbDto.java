@@ -1,6 +1,7 @@
 package com.github.NikitaPopovskiy.SeriesTracker.dto;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.*;
 import com.fasterxml.jackson.datatype.jsr310.deser.*;
 import lombok.*;
@@ -10,6 +11,7 @@ import java.util.*;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TmdbDto {
     @JsonProperty ("id")
     private int idTmdb;
