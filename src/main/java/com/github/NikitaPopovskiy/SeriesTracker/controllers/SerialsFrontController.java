@@ -21,9 +21,9 @@ public class SerialsFrontController {
         return "serials-list";
     }
 
-    @GetMapping ("/add")
-    public String addForm () {
-        return "add-serial";
+    @GetMapping ("/search")
+    public String searchForm () {
+        return "search-serial";
     }
 
 }

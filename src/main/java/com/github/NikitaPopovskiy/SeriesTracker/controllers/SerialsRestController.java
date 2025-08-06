@@ -1,5 +1,7 @@
 package com.github.NikitaPopovskiy.SeriesTracker.controllers;
 
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.datatype.jsr310.*;
 import com.github.NikitaPopovskiy.SeriesTracker.dto.*;
 import com.github.NikitaPopovskiy.SeriesTracker.models.*;
 import com.github.NikitaPopovskiy.SeriesTracker.services.*;
@@ -42,6 +44,7 @@ public class SerialsRestController {
     public List<TmdbDto> searchSerials (@RequestParam String query) {
         List<TmdbDto> serials = tmdbService.searchSerials(query);
         return serials;
+
     }
 
 

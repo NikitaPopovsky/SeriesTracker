@@ -21,6 +21,9 @@
         #loading-spinner {
             display: none;
         }
+        .add-btn {
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -54,18 +57,12 @@
         const query = document.getElementById('searchQuery').value.trim();
         if (!query) return;
 
-        // Показываем индикатор загрузки
         document.getElementById('loading-spinner').style.display = 'block';
         document.getElementById('searchResultsContainer').innerHTML = '';
 
         try {
-            // Отправляем запрос к вашему Spring-эндпоинту
             const response = await fetch(`http://localhost:8080/api/v1/search?query=${query}`);
-
-            if (!response.ok) {
-                throw new Error(`Ошибка HTTP: ${response.status}`);
-            }
-
+            if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
             const data = await response.json();
             displayResults(data);
         } catch (error) {
@@ -84,11 +81,7 @@
         const container = document.getElementById('searchResultsContainer');
 
         if (!serials || serials.length === 0) {
-            container.innerHTML = `
-                <div class="alert alert-info">
-                    По вашему запросу ничего не найдено
-                </div>
-            `;
+            container.innerHTML = `<div class="alert alert-info">По вашему запросу ничего не найдено</div>`;
             return;
         }
 
@@ -101,15 +94,16 @@
                             <th>Название</th>
                             <th>Год</th>
                             <th>Описание</th>
+                            <th>Действия</th>
                         </tr>
                     </thead>
                     <tbody>
         `;
 
         serials.forEach(serial => {
-            const year = serial.firstAirDate ? new Date(serial.firstAirDate).getFullYear() : '—';
-            const posterUrl = serial.posterPath
-                ? `https://image.tmdb.org/t/p/w154${serial.posterPath}`
+            const year = serial.first_air_date ? new Date(serial.first_air_date).getFullYear() : '—';
+            const posterUrl = serial.poster_path
+                ? `https://image.tmdb.org/t/p/w154${serial.poster_path}`
                 : 'https://via.placeholder.com/60x90?text=No+Poster';
 
             html += `
@@ -118,12 +112,47 @@
                     <td>${serial.name || '—'}</td>
                     <td>${year}</td>
                     <td class="description-preview">${serial.overview || 'Нет описания'}</td>
+                    <td><button class="btn btn-sm btn-success add-btn" data-series-id="${serial.id}">
+                        <i class="bi bi-plus-circle"></i> Добавить
+                    </button></td>
                 </tr>
             `;
         });
 
         html += `</tbody></table></div>`;
         container.innerHTML = html;
+
+        // Обработчики для кнопок
+        document.querySelectorAll('.add-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const seriesId = this.getAttribute('data-series-id');
+                addSeries(seriesId, this);
+            });
+        });
+    }
+
+    async function addSeries(seriesId, button) {
+        button.disabled = true;
+        button.innerHTML = '<i class="bi bi-hourglass"></i> Добавляем...';
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/series/${seriesId}/track`, {
+                method: 'POST'
+            });
+
+            if (!response.ok) throw new Error('Ошибка сервера');
+
+            button.classList.remove('btn-success');
+            button.classList.add('btn-secondary');
+            button.innerHTML = '<i class="bi bi-check-circle"></i> Добавлено';
+        } catch (error) {
+            console.error('Ошибка:', error);
+            button.innerHTML = '<i class="bi bi-x-circle"></i> Ошибка';
+            setTimeout(() => {
+                button.disabled = false;
+                button.innerHTML = '<i class="bi bi-plus-circle"></i> Добавить';
+            }, 2000);
+        }
     }
 </script>
 </body>

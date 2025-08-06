@@ -11,7 +11,7 @@ import java.util.*;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+//@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TmdbDto {
     @JsonProperty ("id")
     private int idTmdb;

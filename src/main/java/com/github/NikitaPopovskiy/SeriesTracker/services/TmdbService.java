@@ -59,7 +59,8 @@ public class TmdbService {
 
     private List<TmdbDto> parseSerials(Response response) {
         ObjectMapper mapper = new ObjectMapper()
-                .registerModule(new JavaTimeModule());
+                .registerModule(new JavaTimeModule())
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         try {
             String json = response.body().string();
             JsonNode rootNode = mapper.readTree(json);
