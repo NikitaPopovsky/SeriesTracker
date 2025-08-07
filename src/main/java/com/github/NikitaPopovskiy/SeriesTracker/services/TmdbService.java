@@ -11,6 +11,7 @@ import java.net.*;
 import java.nio.charset.*;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.*;
 
 import okhttp3.*;
 import okhttp3.Request;
@@ -21,7 +22,7 @@ public class TmdbService {
     private final OkHttpClient okHttpClient;
     private final ObjectMapper mapper;
     private final Request.Builder requestBuilder;
-    private static final Map<Integer, TmdbDto> cashMap = new ConcurrentHashMap <>();
+    private static Map<Integer, TmdbDto> cashMap = new ConcurrentHashMap <>();
 
 
     public TmdbService(OkHttpClient okHttpClient, ObjectMapper mapper, Request.Builder requestBuilder) {
@@ -62,8 +63,8 @@ public class TmdbService {
     }
 
     private void cashSearchSerials(List<TmdbDto> serials) {
-        serials.stream()
-                .forEach(serial-> cashMap.put(serial.getIdTmdb(),serial));
+        cashMap = serials.stream()
+                .collect(Collectors.toConcurrentMap(TmdbDto::getIdTmdb, serial -> serial));
     }
 
     private List<TmdbDto> parseSerials(Response response) {
