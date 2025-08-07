@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.*;
 import java.util.*;
+import java.util.concurrent.*;
 
 import okhttp3.*;
 import okhttp3.Request;
@@ -18,21 +19,21 @@ import okhttp3.Response;
 @Service
 public class TmdbService {
     private final OkHttpClient okHttpClient;
-    private final String apiUrl;
-    private final String apiKey;
+    private final ObjectMapper mapper;
+    private final Request.Builder requestBuilder;
+    private static final Map<Integer, TmdbDto> cashMap = new ConcurrentHashMap <>();
 
-    public TmdbService(
-            @Value("${tmdb.api.base.url}") String apiUrl,
-            @Value("${tmdb.api.key}") String apiKey) {
-        this.okHttpClient = new OkHttpClient();
-        this.apiUrl = apiUrl;
-        this.apiKey = apiKey;
+
+    public TmdbService(OkHttpClient okHttpClient, ObjectMapper mapper, Request.Builder requestBuilder) {
+        this.okHttpClient = okHttpClient;
+        this.mapper = mapper;
+        this.requestBuilder = requestBuilder;
     }
 
     public List<TmdbDto> searchSerials(String name) {
 
-        Request request = RequestInitialization(name, apiUrl, apiKey);
-
+        Request request = RequestInitialization(name);
+        List<TmdbDto> serials = null;
         try {
             Response response = okHttpClient.newCall(request).execute();
             if (!response.isSuccessful()) {
@@ -42,7 +43,7 @@ public class TmdbService {
                 throw new IOException("HTTP error: " + response.code());
             }
 
-            return parseSerials(response);
+            serials = parseSerials(response);
         } catch (IOException e) {
             System.err.println("Request failed: " + e.getMessage());
             e.printStackTrace();
@@ -52,15 +53,20 @@ public class TmdbService {
             } else if (e instanceof java.net.ConnectException) {
                 System.err.println("Connection refused!");
             }
-            return Collections.emptyList();
+            serials = Collections.emptyList();
         }
+
+        cashSearchSerials(serials);
+        return serials;
 
     }
 
+    private void cashSearchSerials(List<TmdbDto> serials) {
+        serials.stream()
+                .forEach(serial-> cashMap.put(serial.getIdTmdb(),serial));
+    }
+
     private List<TmdbDto> parseSerials(Response response) {
-        ObjectMapper mapper = new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         try {
             String json = response.body().string();
             JsonNode rootNode = mapper.readTree(json);
@@ -81,8 +87,8 @@ public class TmdbService {
 
     }
 
-    private Request RequestInitialization(String name, String apiUrl, String apiKey) {
-        HttpUrl url = HttpUrl.parse(apiUrl)
+    private Request RequestInitialization(String name) {
+        HttpUrl url = HttpUrl.parse("")
                 .newBuilder()
                 .addPathSegments("search")
                 .addPathSegments("multi")
@@ -94,11 +100,8 @@ public class TmdbService {
 
         String urlString = url.toString();
 
-        Request request = new Request.Builder()
+        Request request = requestBuilder
                 .url(urlString)
-                .get()
-                .addHeader("accept", "application/json")
-                .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
         return request;
     }
