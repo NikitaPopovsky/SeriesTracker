@@ -7,6 +7,7 @@ import lombok.*;
 import java.time.*;
 
 @Data
+@Entity
 @Table(name = "serials")
 public class Serial {
     @Id
@@ -33,5 +34,9 @@ public class Serial {
         this.overview = tmdbDto.getOverview();
         this.originCountry = tmdbDto.getOriginCountry().getFirst();
         this.posterPath = tmdbDto.getPosterPath();
+    }
+
+    public Serial() {
+
     }
 }

@@ -22,14 +22,17 @@ import okhttp3.Response;
 public class TmdbService {
     private final OkHttpClient okHttpClient;
     private final ObjectMapper mapper;
-    private final Request.Builder requestBuilder;
+    private final String apiUrl;
+    private final String apiKey;
 
 
-
-    public TmdbService(OkHttpClient okHttpClient, ObjectMapper mapper, Request.Builder requestBuilder) {
+    public TmdbService(OkHttpClient okHttpClient, ObjectMapper mapper,
+                       @Value("${tmdb.api.base.url}") String apiUrl,
+                       @Value("${tmdb.api.key}") String apiKey) {
         this.okHttpClient = okHttpClient;
         this.mapper = mapper;
-        this.requestBuilder = requestBuilder;
+        this.apiUrl = apiUrl;
+        this.apiKey = apiKey;
     }
 
     public List<TmdbDto> searchSerials(String name) {
@@ -85,7 +88,7 @@ public class TmdbService {
     }
 
     private Request RequestInitialization(String name) {
-        HttpUrl url = HttpUrl.parse("")
+        HttpUrl url = HttpUrl.parse(apiUrl)
                 .newBuilder()
                 .addPathSegments("search")
                 .addPathSegments("multi")
@@ -97,8 +100,11 @@ public class TmdbService {
 
         String urlString = url.toString();
 
-        Request request = requestBuilder
+        Request request = new Request.Builder()
                 .url(urlString)
+                .get()
+                .addHeader("accept", "application/json")
+                .addHeader("Authorization", "Bearer " + apiKey)
                 .build();
         return request;
     }
