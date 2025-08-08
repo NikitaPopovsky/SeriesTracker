@@ -2,6 +2,7 @@ package com.github.NikitaPopovskiy.SeriesTracker.services;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.*;
+import com.github.NikitaPopovskiy.SeriesTracker.*;
 import com.github.NikitaPopovskiy.SeriesTracker.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.*;
@@ -22,7 +23,7 @@ public class TmdbService {
     private final OkHttpClient okHttpClient;
     private final ObjectMapper mapper;
     private final Request.Builder requestBuilder;
-    private static Map<Integer, TmdbDto> cashMap = new ConcurrentHashMap <>();
+
 
 
     public TmdbService(OkHttpClient okHttpClient, ObjectMapper mapper, Request.Builder requestBuilder) {
@@ -57,14 +58,9 @@ public class TmdbService {
             serials = Collections.emptyList();
         }
 
-        cashSearchSerials(serials);
+        CashSerials.addAllCashSerials(serials);
         return serials;
 
-    }
-
-    private void cashSearchSerials(List<TmdbDto> serials) {
-        cashMap = serials.stream()
-                .collect(Collectors.toConcurrentMap(TmdbDto::getIdTmdb, serial -> serial));
     }
 
     private List<TmdbDto> parseSerials(Response response) {

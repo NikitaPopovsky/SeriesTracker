@@ -1,5 +1,7 @@
 package com.github.NikitaPopovskiy.SeriesTracker.services;
 
+import com.github.NikitaPopovskiy.SeriesTracker.*;
+import com.github.NikitaPopovskiy.SeriesTracker.dto.*;
 import com.github.NikitaPopovskiy.SeriesTracker.repositories.*;
 import org.springframework.stereotype.*;
 
@@ -15,12 +17,10 @@ public class SerialsService {
         this.serialsRepository = serialsRepository;
     }
 
-    public String addSerial (int idTmdb, String serialName, String originalName, LocalDate firstAirDate,
-                             String overview, String originCountry, String posterPath) {
-        Serial newSerial = new Serial(idTmdb, serialName, originalName, firstAirDate, overview,
-                originCountry, posterPath);
+    public void addSerial (int idTmdb) {
+        TmdbDto dto = CashSerials.getCashSerial(idTmdb);
+        Serial newSerial = new Serial(dto);
         serialsRepository.save(newSerial);
-        return "Сериал " + serialName + " успешно добавлен!";
     }
 
     public String deleteSerial (Long id) {

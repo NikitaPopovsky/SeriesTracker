@@ -136,7 +136,7 @@
         button.innerHTML = '<i class="bi bi-hourglass"></i> Добавляем...';
 
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/series/${seriesId}/track`, {
+            const response = await fetch(`http://localhost:8080/api/v1/add?query=${seriesId}`, {
                 method: 'POST'
             });
 

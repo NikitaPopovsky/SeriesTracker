@@ -18,18 +18,6 @@ public class SerialsRestController {
     private final SerialsService serialsService;
     private final TmdbService tmdbService;
 
-    @PostMapping ("/api/v1/add")
-    public String addSerial (
-            @RequestParam int idTmdb,
-            @RequestParam String name,
-            @RequestParam String originalName,
-            @RequestParam LocalDate firstAirDate,
-            @RequestParam String overview,
-            @RequestParam String originCountry,
-            @RequestParam String posterPath) {
-        return serialsService.addSerial(idTmdb, name, originalName, firstAirDate, overview, originCountry, posterPath);
-    }
-
     @DeleteMapping ("/api/v1/delete")
     public String deleteSerial (@RequestParam Long id) {
         return serialsService.deleteSerial(id);
@@ -45,6 +33,11 @@ public class SerialsRestController {
         List<TmdbDto> serials = tmdbService.searchSerials(query);
         return serials;
 
+    }
+
+    @PostMapping ("/api/v1/add")
+    public void addSerial (@RequestParam int idTmdb) {
+        serialsService.addSerial(idTmdb);
     }
 
 
