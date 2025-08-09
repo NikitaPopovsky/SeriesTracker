@@ -12,12 +12,33 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .description-cell {
-            max-width: 300px;
-            white-space: normal !important; /* Разрешаем перенос строк */
-            word-wrap: break-word; /* Перенос длинных слов */
+            width: 300px;
+            height: 100px;
+            padding: 8px;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        .description-content {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            word-break: break-word;
+            white-space: normal;
+            line-height: 1.4;
+            margin: 0;
         }
         .table-fixed {
-            table-layout: fixed; /* Фиксированная ширина таблицы */
+            table-layout: fixed;
+        }
+        tr {
+            height: 100px;
+        }
+        td {
+            vertical-align: middle !important;
         }
     </style>
 </head>
@@ -29,20 +50,22 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table table-hover align-middle table-fixed">
+        <table class="table table-hover table-fixed">
             <thead class="table-light">
             <tr>
+                <th style="width: 50px;">ID</th>
                 <th style="width: 100px;">Постер</th>
                 <th style="width: 150px;">Название</th>
                 <th style="width: 150px;">Оригинальное название</th>
                 <th style="width: 100px;">Дата выхода</th>
                 <th style="width: 300px;">Описание</th>
                 <th style="width: 100px;">Страна</th>
-                <th style="width: 120px;">Действия</th>
+                <th style="width: 150px;">Действия</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="serial : ${serialList}">
+                <td th:text="${serial.id}"></td>
                 <td>
                     <img th:if="${serial.posterPath}"
                          th:src="${'https://image.tmdb.org/t/p/w200' + serial.posterPath}"
@@ -56,16 +79,18 @@
                     <span th:if="${serial.firstAirDate}" th:text="${#strings.substring(serial.firstAirDate, 0, 10)}"></span>
                     <span th:unless="${serial.firstAirDate}" class="text-muted">-</span>
                 </td>
-                <td class="description-cell" th:text="${serial.overview}"></td>
+                <td class="description-cell">
+                    <div class="description-content" th:text="${serial.overview}"></div>
+                </td>
                 <td>
-                        <span th:each="country : ${serial.originCountry}"
-                              th:text="${country}"
-                              class="badge bg-secondary me-1"></span>
+                    <span th:each="country : ${serial.originCountry}"
+                          th:text="${country}"
+                          class="badge bg-secondary me-1"></span>
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm">
                         <a href="#" class="btn btn-outline-info">Подробнее</a>
-                        <a href="#" class="btn btn-outline-danger">Удалить</a>
+                        <button class="btn btn-outline-danger delete-btn" th:data-id="${serial.id}">Удалить</button>
                     </div>
                 </td>
             </tr>
@@ -75,5 +100,28 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const id = this.getAttribute('data-id');
+            if (confirm('Вы уверены, что хотите удалить этот сериал?')) {
+                try {
+                    const response = await fetch(`/api/v1/delete?id=${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('Ошибка при удалении');
+                    }
+                } catch (error) {
+                    console.error('Ошибка:', error);
+                    alert('Произошла ошибка при удалении');
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>
