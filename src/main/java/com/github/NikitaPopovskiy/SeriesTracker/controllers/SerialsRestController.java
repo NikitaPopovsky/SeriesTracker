@@ -36,8 +36,8 @@ public class SerialsRestController {
     }
 
     @PostMapping ("/api/v1/add")
-    public void addSerial (@RequestParam int idTmdb) {
-        serialsService.addSerial(idTmdb);
+    public void addSerial (@RequestParam String idTmdb) {
+        serialsService.addSerial(Integer.parseInt(idTmdb));
     }
 
 

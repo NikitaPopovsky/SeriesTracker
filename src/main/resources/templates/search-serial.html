@@ -28,6 +28,10 @@
 </head>
 <body>
 <div class="container mt-4">
+    <button onclick="window.location.href='http://localhost:8080/'" class="btn btn-secondary mb-3">
+        <i class="bi bi-arrow-left"></i> Назад
+    </button>
+
     <form id="searchForm" class="mb-4">
         <div class="input-group">
             <input type="text"
@@ -136,7 +140,7 @@
         button.innerHTML = '<i class="bi bi-hourglass"></i> Добавляем...';
 
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/add?query=${seriesId}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/add?idTmdb=${seriesId}`, {
                 method: 'POST'
             });
 
