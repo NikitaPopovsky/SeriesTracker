@@ -140,7 +140,7 @@
         button.innerHTML = '<i class="bi bi-hourglass"></i> Добавляем...';
 
         try {
-            const response = await fetch(`http://localhost:8080/api/v1/add?idTmdb=${seriesId}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/add?idSerial=${seriesId}`, {
                 method: 'POST'
             });
 

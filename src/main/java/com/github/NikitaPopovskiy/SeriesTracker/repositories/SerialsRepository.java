@@ -8,5 +8,5 @@ import java.util.*;
 
 public interface SerialsRepository extends CrudRepository <Serial, Long>  {
 
-    List<Serial> findSerialByIdTmdb(int idTmdb);
+    List<Serial> findSerialByIdSerialTmdb(int idTmdb);
 }

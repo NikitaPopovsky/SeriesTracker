@@ -1,4 +1,4 @@
-package com.github.NikitaPopovskiy.SeriesTracker;
+package com.github.NikitaPopovskiy.SeriesTracker.cash;
 
 import com.github.NikitaPopovskiy.SeriesTracker.dto.*;
 
@@ -14,7 +14,7 @@ public class CashSerials {
                 .collect(Collectors.toConcurrentMap(TmdbDto::getIdTmdb, serial -> serial));
     }
 
-    public static TmdbDto getCashSerial(int idTmdb) {
-        return cashMap.get(idTmdb);
+    public static TmdbDto getCashSerial(int idSerialTmdb) {
+        return cashMap.get(idSerialTmdb);
     }
 }

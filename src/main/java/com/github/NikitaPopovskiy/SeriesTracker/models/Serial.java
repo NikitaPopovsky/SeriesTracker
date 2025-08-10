@@ -13,8 +13,8 @@ public class Serial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "id_tmdb")
-    private int idTmdb;
+    @Column(name = "id_serial_tmdb")
+    private int idSerialTmdb;
     private String name;
     @Column(name = "original_name")
     private String originalName;
@@ -27,7 +27,7 @@ public class Serial {
     private String posterPath;
 
     public Serial(TmdbDto tmdbDto) {
-        this.idTmdb = tmdbDto.getIdTmdb();
+        this.idSerialTmdb = tmdbDto.getIdSerialTmdb();
         this.name = tmdbDto.getName();
         this.originalName = tmdbDto.getOriginalName();
         this.firstAirDate = tmdbDto.getFirstAirDate();
@@ -40,3 +40,4 @@ public class Serial {
 
     }
 }
+

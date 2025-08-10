@@ -1,18 +1,13 @@
 package com.github.NikitaPopovskiy.SeriesTracker.services;
 
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.datatype.jsr310.*;
-import com.github.NikitaPopovskiy.SeriesTracker.*;
+import com.github.NikitaPopovskiy.SeriesTracker.cash.*;
 import com.github.NikitaPopovskiy.SeriesTracker.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.*;
 
 import java.io.*;
-import java.net.*;
-import java.nio.charset.*;
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.stream.*;
 
 import okhttp3.*;
 import okhttp3.Request;

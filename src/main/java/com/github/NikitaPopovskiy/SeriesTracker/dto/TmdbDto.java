@@ -14,7 +14,7 @@ import java.util.*;
 //@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TmdbDto {
     @JsonProperty ("id")
-    private int idTmdb;
+    private int idSerialTmdb;
     private String name;
     @JsonProperty ("original_name")
     private String originalName;

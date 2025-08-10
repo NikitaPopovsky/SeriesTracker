@@ -1,13 +1,12 @@
 package com.github.NikitaPopovskiy.SeriesTracker.services;
 
-import com.github.NikitaPopovskiy.SeriesTracker.*;
+import com.github.NikitaPopovskiy.SeriesTracker.cash.*;
 import com.github.NikitaPopovskiy.SeriesTracker.dto.*;
 import com.github.NikitaPopovskiy.SeriesTracker.repositories.*;
 import org.springframework.stereotype.*;
 
 import com.github.NikitaPopovskiy.SeriesTracker.models.Serial;
 
-import java.time.*;
 import java.util.*;
 
 @Service
@@ -18,10 +17,10 @@ public class SerialsService {
         this.serialsRepository = serialsRepository;
     }
 
-    public void addSerial (int idTmdb) {
-        TmdbDto dto = CashSerials.getCashSerial(idTmdb);
+    public void addSerial (int idSerialTmdb) {
+        TmdbDto dto = CashSerials.getCashSerial(idSerialTmdb);
 
-        List<Serial> serials = serialsRepository.findSerialByIdTmdb(idTmdb);
+        List<Serial> serials = serialsRepository.findSerialByIdSerialTmdb(idSerialTmdb);
 
         if (serials.isEmpty()) {
             Serial newSerial = new Serial(dto);
