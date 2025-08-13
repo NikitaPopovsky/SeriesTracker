@@ -11,7 +11,7 @@ public class CashSerials {
 
     public static void addAllCashSerials(List<TmdbDto> serials) {
         cashMap = serials.stream()
-                .collect(Collectors.toConcurrentMap(TmdbDto::getIdTmdb, serial -> serial));
+                .collect(Collectors.toConcurrentMap(TmdbDto::getIdSerialTmdb, serial -> serial));
     }
 
     public static TmdbDto getCashSerial(int idSerialTmdb) {

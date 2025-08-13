@@ -7,7 +7,7 @@ import java.time.*;
 
 @Data
 @Entity
-@Table (name = "Episodes")
+@Table (name = "episodes")
 public class Episode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

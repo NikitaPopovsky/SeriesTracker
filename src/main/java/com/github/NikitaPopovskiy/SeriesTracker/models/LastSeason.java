@@ -7,7 +7,7 @@ import java.time.*;
 
 @Data
 @Entity
-@Table (name = "LastSeasones")
+@Table (name = "lastseasones")
 public class LastSeason {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
