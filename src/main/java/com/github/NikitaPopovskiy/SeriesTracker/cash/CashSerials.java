@@ -1,7 +1,11 @@
 package com.github.NikitaPopovskiy.SeriesTracker.cash;
 
 import com.github.NikitaPopovskiy.SeriesTracker.dto.*;
+import jakarta.websocket.Session;
+import org.hibernate.*;
+import org.springframework.boot.autoconfigure.jms.*;
 
+import java.sql.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.*;
@@ -16,5 +20,6 @@ public class CashSerials {
 
     public static TmdbDto getCashSerial(int idSerialTmdb) {
         return cashMap.get(idSerialTmdb);
+
     }
 }

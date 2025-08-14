@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS episodes (
 
 CREATE TABLE IF NOT EXISTS lastseasones (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    id_serial_tmdb INT NOT NULL,
+    serial INT NOT NULL,
     season_number TINYINT NOT NULL,
     episode_count TINYINT NOT NULL,
     name VARCHAR(100) NOT NULL,

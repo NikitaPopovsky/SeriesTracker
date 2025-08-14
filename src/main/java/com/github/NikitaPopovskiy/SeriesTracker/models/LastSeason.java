@@ -12,8 +12,9 @@ public class LastSeason {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "id_serial_tmdb")
-    private int idSerialTmdb;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "serial_id", referencedColumnName = "id")
+    private Serial serial;
     @Column(name = "season_number")
     private byte seasonNumber;
     @Column(name = "episode_count")

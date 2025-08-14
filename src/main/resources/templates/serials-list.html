@@ -93,18 +93,18 @@
                           th:text="${country}"
                           class="badge bg-secondary me-1"></span>
                 </td>
-                <td>
-                    <span th:switch="${serial.status}" class="badge status-badge">
-                        <span th:case="'Returning Series'" class="bg-success">Выходит</span>
-                        <span th:case="'Ended'" class="bg-secondary">Завершен</span>
-                        <span th:case="'Canceled'" class="bg-danger">Отменен</span>
-                        <span th:case="*" class="bg-warning text-dark">Неизвестно</span>
-                    </span>
-                </td>
-                <td>
-                    <span th:if="${serial.nextEpisodeDate}" th:text="${#dates.format(serial.nextEpisodeDate, 'dd.MM.yyyy')}"></span>
-                    <span th:unless="${serial.nextEpisodeDate}" class="text-muted">-</span>
-                </td>
+<!--                <td>-->
+<!--                    <span th:switch="${serial.status}" class="badge status-badge">-->
+<!--                        <span th:case="'Returning Series'" class="bg-success">Выходит</span>-->
+<!--                        <span th:case="'Ended'" class="bg-secondary">Завершен</span>-->
+<!--                        <span th:case="'Canceled'" class="bg-danger">Отменен</span>-->
+<!--                        <span th:case="*" class="bg-warning text-dark">Неизвестно</span>-->
+<!--                    </span>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <span th:if="${serial.nextEpisodeDate}" th:text="${#dates.format(serial.nextEpisodeDate, 'dd.MM.yyyy')}"></span>-->
+<!--                    <span th:unless="${serial.nextEpisodeDate}" class="text-muted">-</span>-->
+<!--                </td>-->
                 <td>
                     <div class="btn-group btn-group-sm">
                         <a href="#" class="btn btn-outline-info">Подробнее</a>

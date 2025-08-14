@@ -1,5 +1,4 @@
 package com.github.NikitaPopovskiy.SeriesTracker.models;
 
-public class StatusSerials {
-
+public class NextEpisodesDate {
 }
