@@ -26,6 +26,7 @@ public class Serial {
     @Column(name = "poster_path")
     private String posterPath;
 
+
     public Serial(TmdbDto tmdbDto) {
         this.idSerialTmdb = tmdbDto.getIdSerialTmdb();
         this.name = tmdbDto.getName();
